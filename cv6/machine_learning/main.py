@@ -4,6 +4,7 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from data.data_handling_refactored import DatasetRefactored
 from experiment.experiment import Experiment
 from plotting.experiment_plotter import ExperimentPlotter
@@ -19,10 +20,18 @@ def initialize_models_and_params():
     - param_grids: dict, dictionary of hyperparameter grids.
     """
     models = {
-        "Logistic Regression": LogisticRegression(solver='liblinear')
+        "Logistic Regression": LogisticRegression(solver='liblinear'),
+        "Random Forest": RandomForestClassifier(random_state=42, max_features='sqrt'),
     }
     param_grids = {
-        "Logistic Regression": {"C": [0.1, 1, 10], "max_iter": [10000]}
+        "Logistic Regression": {"C": [0.1, 1, 10], "max_iter": [10000]},
+        "Random Forest": {
+            "n_estimators": [100, 200, 300],
+            "max_depth": [None, 10],
+            "min_samples_split": [2, 5],
+            "min_samples_leaf": [1, 2],
+            "max_features": ['sqrt', 'log2']
+        }
     }
     return models, param_grids
 
@@ -42,7 +51,7 @@ def run_experiment(dataset, models, param_grids, logger):
     - results: DataFrame, the results of the experiment.
     """
     logger.info("Starting the experiment...")
-    experiment = Experiment(models, param_grids, logger=logger)
+    experiment = Experiment(models, param_grids, 30,logger=logger)
     results = experiment.run(dataset.data, dataset.target)
     logger.info("Experiment completed successfully.")
     return experiment, results
@@ -62,7 +71,10 @@ def plot_results(experiment, results, logger):
     plotter.plot_metric_density(results)
     plotter.plot_evaluation_metric_over_replications(
         experiment.results.groupby('model')['accuracy'].apply(list).to_dict(),
-        'Accuracy per Replication and Average Accuracy', 'Accuracy')
+        'Accuracy per Replication and Average Accuracy', 'Accuracy', "accuracy_per_replication.png")
+    plotter.plot_evaluation_metric_over_replications(
+        experiment.results.groupby('model')['precision'].apply(list).to_dict(),
+        'Precision per Replication and Average Precision', 'Precision', "precision_per_replication.png")
     plotter.plot_confusion_matrices(experiment.mean_conf_matrices)
     plotter.print_best_parameters(results)
     logger.info("Plots generated successfully.")

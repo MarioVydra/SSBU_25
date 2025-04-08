@@ -6,7 +6,7 @@ from plotting.base_plotter import BasePlotter
 class ExperimentPlotter(BasePlotter):
     """A class for plotting the results of machine learning experiments."""
 
-    def plot_metric_density(self, results, metrics=('accuracy', 'f1_score', 'roc_auc')):
+    def plot_metric_density(self, results, metrics=('accuracy', 'f1_score', 'roc_auc', 'precision')):
         """
         Plot density plots for specified metrics.
 
@@ -26,10 +26,11 @@ class ExperimentPlotter(BasePlotter):
                 title=f'Density Plot of {metric.capitalize()}',
                 xlabel=metric.capitalize(),
                 ylabel='Density',
-                figsize=(10, 6)
+                figsize=(10, 6),
+                filename=f"density_{metric}.png"
             )
 
-    def plot_evaluation_metric_over_replications(self, all_metric_results, title, metric_name):
+    def plot_evaluation_metric_over_replications(self, all_metric_results, title, metric_name, filename=None):
         """
         Plot accuracies for each model over all replications and display the average accuracy.
 
@@ -52,7 +53,8 @@ class ExperimentPlotter(BasePlotter):
             title=title,
             xlabel='Replication',
             ylabel=metric_name,
-            figsize=(10, 5)
+            figsize=(10, 5),
+            filename=filename
         )
 
     def plot_confusion_matrices(self, confusion_matrices):
@@ -73,7 +75,8 @@ class ExperimentPlotter(BasePlotter):
                 title=f'Average Confusion Matrix: {model_name}',
                 xlabel='Predicted label',
                 ylabel='True label',
-                figsize=(6, 5)
+                figsize=(6, 5),
+                filename=f"conf_matrix_{model_name}.png"
             )
 
     def print_best_parameters(self, results):

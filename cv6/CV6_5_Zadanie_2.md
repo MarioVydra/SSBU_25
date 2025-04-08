@@ -14,7 +14,20 @@ Pridajte do kódu ďalší model strojového učenia (ľubovoľný), a taktiež 
 
 **Uveďte aký ML model a hodnoty jeho parametrov ste použili:**
 
-#TODO - Popis
+Za ďalší model strojového učenia som zvolil Random Forest, kde počiatočný seed som nastavil na hodnotu 42.
+
+Parametre pre grid search:
+
+- počet stromov v lese (n_estimators): [100, 200, 300]
+    
+- maximálna hĺbka stromu (max_depth): [None, 10] (None - stromy rastú, až do kým nie su listy čisté)
+    
+- minimálny počet vzoriek na rozdelenie uzla (min_samples_split): [2, 5]
+    
+- minimálny počet vzoriek v listovom uzle (min_samples_leaf): [1, 2]
+    
+- maximálny počet vlastností (max_features): ['sqrt', 'log2']
+
 
 ### Úloha 2 (2b)
 
@@ -22,7 +35,9 @@ Implementujte ďalšiu (ľubovoľnú) metriku pre evaluáciu modelov. Nezabudnit
 
 **Uveďte akú metriku ste doplnili:**
 
-#TODO - Metrika
+Ako ďalšiu metriku pre evaluáciu modelov som použil Precision.
+
+Precision = TP / (TP + FP) (napr. koľko z predikovaných chorých, bolo skutočne chorých)
 
 ### Úloha 3 (1b)
 
@@ -32,7 +47,38 @@ Do implementácie pridajte ukladanie všetkých grafov, ktoré sa vytvárajú pr
 
 **V skripte `main.py`** nastavte počet replikácií na vyššie číslo (rozumne, podľa vlastného uváženia). Vykonajte beh aplikácie s Vašou implementáciou. Po skončení behu zanalyzujte vygenerované grafy a pár vetami popíšte ich interpretáciu. (Napr. v čom je ktorý ML model lepší, a pod.)
 
-#TODO - Interpretácia
+Confusion matrix:
+    
+- Logistická regresia má menej chýb (4.4 a 2.9) v porovnaní s Random Forest (5.4 a 6.07)
+
+Accuracy per replication:
+
+- Oba modely si vedú viac menej podobne (LR: 0.97, RF: 0.96)
+- LR je o čosi stabilnejšia
+
+Precision per replication:
+
+- LR má vyššiu priemernú precíznosť (0.97) s menšími výkyvmi v porovnaní s RF (0.96)
+
+Density precision: 
+
+- LR dosahuje vyššiu precíznosť
+
+Density accuracy:
+
+- LR má väčšiu presnosť (sústredenú okolo 0.97)
+
+Density ROC_AUC:
+
+- LR má o niečo vyššie skóre ako RF
+
+Density F1 score:
+
+- LR má vyššie F1 skóre ako RF
+
+
+#### LR je presnejšia a viac spoľahlivejšia v porovnaní s RF.
+
 
 **Odovzdávanie riešenia:** Ako súčasť riešenia zahrňte okrem odpovedí na otázky aj skripty s Vašou implementáciou, vygenerované logy a grafy (všetko môžete dať na Github).
 

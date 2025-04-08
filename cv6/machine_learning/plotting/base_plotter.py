@@ -1,3 +1,5 @@
+import os
+
 from matplotlib import pyplot as plt
 from typing import Callable
 
@@ -15,10 +17,17 @@ class BasePlotter:
         - kwargs: Keyword arguments for the plotting function.
         """
         general_kwargs = {key: kwargs.pop(key, None) for key in ['title', 'xlabel', 'ylabel', 'xticks_rotation', 'yticks', 'yticklabels', 'xticks']}
+        filename = kwargs.pop('filename', None)
         plt.figure(figsize=kwargs.pop('figsize', (10, 6)))
         plot_func(*args, **kwargs)
         self.__apply_plot_labels(general_kwargs)
         plt.tight_layout()
+
+        if filename:
+            output_dir = os.path.join("outputs", "graphs")
+            os.makedirs(output_dir, exist_ok=True)
+            plt.savefig(os.path.join(output_dir, filename))
+
         plt.show()
 
     def __apply_plot_labels(self, general_kwargs):
