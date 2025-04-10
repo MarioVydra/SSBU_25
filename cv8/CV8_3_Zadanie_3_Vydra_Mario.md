@@ -24,6 +24,6 @@ LR (H0) = 7042640
 
 W(H0 | údaje) = 7042640 / (7042640 + 1) = 0.99999986 -> 99.999986%
 
-W(HA | údaje) = 1 - 0.99999986 = 0.00000014 -> 0.000014
+W(HA | údaje) = 1 - 0.99999986 = 0.00000014 -> 0.000014%
 
 Záver: Prijímame prvú hypotézu H0. Môžeme povedať, že s 99.999986% pravdepodobnosťou, daný muž je biologickým otcom dcéry (dieťa so strýkami sú príbuzní).
